@@ -1,0 +1,12 @@
+{
+  "expo": {
+    "extra": {
+      "eas": {
+        "projectId": "62508d88-7ca1-4ec8-a9d9-cef890be08e3"
+      }
+    },
+    "android": {
+      "package": "test1.expo.notification"
+    }
+  }
+}

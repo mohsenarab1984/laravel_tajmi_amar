@@ -1,0 +1,12 @@
+https://inertiajs.com/server-side-setup
+
+
+npm install @inertiajs/vue3
+
+==========================================
+npm show vue versions ### just for help 
+npm installtall  vue@3.4.18
+npm install -D @vue/compiler-sfc
+========================================
+
+npm i  @vitejs/plugin-vue

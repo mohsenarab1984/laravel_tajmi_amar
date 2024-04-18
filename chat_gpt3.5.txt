@@ -1,0 +1,19 @@
+To instruct Inertia to use a different main template, such as app2.blade.php, instead of the default app.blade.php, you can specify the template name in your controller methods when returning an Inertia response. Here's how you can achieve this:
+
+Create a new main template file, for example, app2.blade.php, with the desired layout structure for your Inertia application.
+
+In your Laravel controller methods where you return Inertia responses, specify the template name using the inertia() method with the template option set to the desired template name. For example:
+
+use Inertia\Inertia;
+
+Route::get('/', function () {
+    return Inertia::render('Home', [
+        'name' => 'John Doe',
+    ])->withTemplate('app2');
+});
+In this code snippet:
+
+Inertia::render('Home') returns the Inertia response for the 'Home' template.
+->withTemplate('app2') specifies that the main template to be used is app2.blade.php.
+Update your web.php routes or controller methods accordingly to use the withTemplate() method to set the main template for Inertia responses.
+By specifying the template name using the withTemplate() method in your controller methods, you can instruct Inertia to use a different main template, such as app2.blade.php, for rendering your Inertia components. This approach allows you to customize the layout of your Inertia application by using different main templates based on your requirements.

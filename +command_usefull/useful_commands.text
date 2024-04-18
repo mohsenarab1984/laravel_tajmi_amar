@@ -1,0 +1,19 @@
+<Link   href="/users" preserve-scroll  >users</Link>
+ ==============================  =====
+ <Link   href="/logout"    method="post"   as="button"   class="text-blue-500 hover:underline" 
+     :data="{ info: 'admin' }"   >logout</Link>
+=================================
+<Link   href="/" class="text-blue-500 hover:underline" :class="{ 'font-bold': $page.url === '/' }" >Home</Link
+                >
+===========================================
+<Link   href="/"   class="text-blue-500 hover:underline"   :class="{ 'font-bold': $page.component === 'Home' }"   >Home</Link>
+==========================================
+ in vue, every thing that we do not defined it as props in Called component , it will be copied to the called component like:
+ <NavLink
+                    href="/settings"
+                    :active="$page.component === 'Settings'"
+                    >Settings</NavLink
+                >
+
+  href="/"  will be copied into  NavLink template .            
+=================
