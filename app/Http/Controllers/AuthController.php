@@ -19,10 +19,12 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
+           
             if(Auth::user()->is_admin==1){
-
+                //dd(Auth::user(),'is_admin==1');
                 return redirect('/admin');
             }else{
+                //dd(Auth::user(),'is_admin==0');
                 return redirect('/');
 
             }

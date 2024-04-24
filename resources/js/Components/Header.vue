@@ -12,16 +12,18 @@
                         class="main_header d-flex justify-content-between align-items-center"
                     >
                         <div class="header_logo">
-                            <div v-if="user">
+                            <div v-if="user" style="gap: 2rem!important; display: flex;">
                                 <span>{{ user.name }}</span>
                                 <Link href="/logout"   as="button"> خروج </Link>
+                                <Link v-if="user && user.is_admin==0" href="/user/upload"   as="button"> آپلود </Link>
 
                                 <!-- <span v-if="user.is_admin==1" class="mx-4 border rounded px-4 py-2 ">
                                     <Link> پنل ادمین </Link>
                                 </span> -->
                             </div>
-                            <div v-else>
-                                <Link  href="/login"  >  ورود  </Link>
+                            <div v-else style="gap: 2rem!important; display: flex;">
+                                <Link  href="/login"  as="button">  ورود کاربر  </Link>
+                                <Link  href="/admin/login" as="button" >  ورود ادمین  </Link>
                                 
                             </div>
                            

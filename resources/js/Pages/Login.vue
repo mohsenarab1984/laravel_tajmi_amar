@@ -45,7 +45,7 @@
     // console.log('fdfd')
     myForm.post('/login',{
       preserveScroll: true,
-      onSuccess: () => {router.get('/admin')},
+      // onSuccess: () => {router.get('/')},
 }    );
   };
   </script>

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\FileController;
 use App\Http\Controllers\PhotoController;
 use App\Models\Blog;
 use App\Models\Mobl;
@@ -26,14 +27,19 @@ Route::get('/', function () {
 });
 Route::get('/admin', function () {
     return Inertia::render('Admin/Index');
-});
+})->middleware('admin');
 Route::get('/admin/users', function () {
     return Inertia::render('Admin/Users/Index');
-});
+})->middleware('admin');;
 
 
+Route::get('/user/upload',[FileController::class,'upload_form']);
+Route::post('/user/upload',[FileController::class,'store']);
 
 Route::get('/login', function () {
+    return Inertia::render('Login');
+});
+Route::get('/admin/login', function () {
     return Inertia::render('Login');
 });
  
