@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\FileController;
+use App\Http\Controllers\MenuController;
 use App\Http\Controllers\PhotoController;
 use App\Models\Blog;
 use App\Models\Mobl;
@@ -28,9 +29,22 @@ Route::get('/', function () {
 Route::get('/admin', function () {
     return Inertia::render('Admin/Index');
 })->middleware('admin');
+
 Route::get('/admin/users', function () {
     return Inertia::render('Admin/Users/Index');
-})->middleware('admin');;
+})->middleware('admin');
+
+Route::get('/admin/menu/create', [MenuController::class,'create'])->middleware('admin');
+Route::post('/admin/menu/save', [MenuController::class,'save'])->middleware('admin');
+Route::get('/admin/menu/', [MenuController::class,'index'])->middleware('admin');
+ 
+
+Route::get('/admin/report/create', function () {
+    return Inertia::render('Admin/Report/Create');
+})->middleware('admin');
+Route::get('/admin/report/show', function () {
+    return Inertia::render('Admin/Report/Show');
+})->middleware('admin');
 
 
 Route::get('/user/upload',[FileController::class,'upload_form']);
