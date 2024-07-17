@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->text('title');
             $table->integer('parent_id')->default('0');
+            $table->integer('operation_id');
             $table->timestamps();
         });
     }

@@ -13,13 +13,14 @@
                 <label for="title" class="form-label">منوی والد</label>
                  <select v-model="form.parent_id">
                      <option value="0"> ندارد </option>
-                     <option value="1">  تست </option>
-                     <option value="tick"> - for each parent -- </option>
+                  
+                     <option :value="menu.id" v-for="menu in menus">  {{ menu.title }} </option>
+                   
                  </select>
                 <div v-if="form.errors.parent_id" class="color_red">{{ form.errors.parent_id }}</div>
             </div>
 
-            <button class="btn btn-primary" @click="sendData">create</button>
+            <button class="btn btn-primary" @click="sendData" :disabled="form.processing">create</button>
 
     </div>
 
@@ -28,10 +29,12 @@
   
   <script setup>
   import { ref } from 'vue';
+
   import { useForm } from '@inertiajs/vue3';
 
   import { toast } from 'vue3-toastify'
   import 'vue3-toastify/dist/index.css';
+  const props = defineProps(['menus']);
 
 //showToast('success','موفق شدید ')
 
@@ -47,10 +50,13 @@
  
   
   const sendData = () => {
-    
+
+    console.log(form)
+    //return ;
      form.post('/admin/menu/save',{
       preserveScroll: true,
       onSuccess:()=>{
+        form.reset()
         toast.success('عملیات با موفقیت انجام شد')
        // alert('موفق')
       }
