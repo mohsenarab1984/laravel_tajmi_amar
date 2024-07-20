@@ -30,4 +30,9 @@ class OperationController extends Controller
 
         //return response()->json(['id' => $operationId, 'message' => 'Operation created successfully']);
     }
+
+    public function index(){
+        $operations = Operation::all() ;
+        return Inertia::render('Admin/Operation/Index',['operations'=>$operations]) ;
+    }
 }

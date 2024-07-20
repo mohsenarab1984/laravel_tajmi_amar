@@ -42,4 +42,10 @@ class MenuController extends Controller
         return redirect()->back() ;
 
     }
+
+    public function destroy(Request $request ) {
+        $menu= Menu::findOrfail($request->id);
+        $menu->delete();
+        return back();
+    }
 }

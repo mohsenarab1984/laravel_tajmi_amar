@@ -35,6 +35,7 @@ Route::get('/admin', function () {
 })->middleware('admin');
 
 
+Route::get('/admin/operation/', [OperationController::class,'index'])->middleware('admin');
 Route::post('/admin/operation/create', [OperationController::class,'save_title'])->middleware('admin');
 
 Route::get('/admin/operation/create', function () {
@@ -59,6 +60,7 @@ Route::get('/admin/menu/create', [MenuController::class,'create'])->middleware('
 Route::post('/admin/menu/save', [MenuController::class,'save'])->middleware('admin');
 Route::get('/admin/menu/', [MenuController::class,'index'])->middleware('admin');
 Route::post('/admin/menu/{id}/', [MenuController::class,'update'])->middleware('admin');
+Route::delete('/admin/menu/{id}/', [MenuController::class,'destroy'])->middleware('admin');
  
 
 Route::get('/admin/report/create', function () {

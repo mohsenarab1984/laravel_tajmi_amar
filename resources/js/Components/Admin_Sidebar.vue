@@ -52,6 +52,9 @@
                     <i class="fs-4 bi-bootstrap"></i> <span class="ms-1 d-none d-sm-inline">عملیات</span></a>
                 <ul class="collapse nav flex-column ms-1 " id="menu_operation_sidebar" data-bs-parent="#menu" style="border-right: 1px solid rgb(204, 204, 204);padding-right:20px; background: #666;">
                     <li class="w-100">
+                        <Link href="/admin/operation/" class="nav-link px-0"> <span class="d-none d-sm-inline">      عملیات ها</span>  </Link>
+                    </li>
+                    <li class="w-100">
                         <Link href="/admin/operation/create" class="nav-link px-0"> <span class="d-none d-sm-inline">ساخت     عملیات</span>  </Link>
                     </li>
                    
