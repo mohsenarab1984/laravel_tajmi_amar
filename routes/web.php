@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\FileController;
+use App\Http\Controllers\ItemController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\OperationController;
 use App\Http\Controllers\PhotoController;
@@ -44,7 +45,7 @@ Route::get('/admin/operation/create', function () {
 
 Route::get('/admin/operation/{id}/edit', function ($id) {
     $operation = Operation::find($id) ;
-    $menus = Menu::where('operation_id',$id)->OrderBy('id')->get();
+    $menus = Menu::where('operation_id',$id)->OrderBy('id')->with('items.adder','items.verifier','items.viewer')->get();
     return Inertia::render('Admin/Operation/Edit',['operation'=>$operation,'menus'=>$menus]);
 })->middleware('admin')->name('admin.operation.edit');
 
@@ -61,11 +62,15 @@ Route::post('/admin/menu/save', [MenuController::class,'save'])->middleware('adm
 Route::get('/admin/menu/', [MenuController::class,'index'])->middleware('admin');
 Route::post('/admin/menu/{id}/', [MenuController::class,'update'])->middleware('admin');
 Route::delete('/admin/menu/{id}/', [MenuController::class,'destroy'])->middleware('admin');
+
+
+Route::post('/admin/item/save', [ItemController::class,'save'])->middleware('admin');
+
  
 
 Route::get('/admin/report/create', function () {
     return Inertia::render('Admin/Report/Create');
-})->middleware('admin')->name('admin.operation.create');
+})->middleware('admin')->name('admin.report.create');
 
 Route::get('/admin/report/show', function () {
     return Inertia::render('Admin/Report/Show');

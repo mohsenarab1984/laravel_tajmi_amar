@@ -53,6 +53,9 @@
               </div>
   
               <button class="btn btn-primary" @click="sendData">Send</button>
+              <div v-if="form.errors">
+                      <div v-for="error in form.errors"> {{ error }} </div>
+              </div>
   
       </div>
   
@@ -139,6 +142,9 @@
         onSuccess:()=>{
           toast.success('عملیات با موفقیت انجام شد')
          // alert('موفق')
+        },
+        onError:(errors)=>{
+          toast.error('خطا')
         }
        })
     };
