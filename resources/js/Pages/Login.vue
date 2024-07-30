@@ -3,11 +3,11 @@
       <div   style="max-width: 300px; margin: 0 auto" class="text-center">
                    <div class="row my-2">
 
-                    <input type="text" v-model="myForm.username" placeholder="Username" class="p-2">
+                    <input type="text" v-model="myForm.username" placeholder="Username" class="p-2"  @mousedown="onMouseDown"    >
                   </div>
                   <div class="row my-2">
 
-                    <input type="password" v-model="myForm.password" placeholder="Password" class="p-2">
+                    <input type="password" v-model="myForm.password" placeholder="Password" class="p-2"    >
                   </div>
                   <div class="row">
 
@@ -29,7 +29,7 @@
   </template>
   
   <script setup>
-  import { ref } from 'vue';
+  import { onMounted, ref, watch } from 'vue';
   import { useForm, router } from '@inertiajs/vue3';
   defineProps(['errors'])
   
@@ -39,13 +39,37 @@
   };
   
   // const { data, setData, post, errors } = useForm(form);
-  const myForm = useForm(form);
+  const myForm = useForm({
+    username:'',
+    password:''
+  });
   
   const submitForm = () => {
     // console.log('fdfd')
     myForm.post('/login',{
       preserveScroll: true,
       // onSuccess: () => {router.get('/')},
-}    );
+    } );
+
   };
+
+  // onMounted(() => {  
+  // this.$nextTick(() => {  
+  //   document.querySelector('input[type="text"]').focus();  
+  // });  
+// }); 
+
+watch(() => myForm.username, (newValue) => {  
+  console.log("Username Updated:", newValue);  
+});  
+
+watch(() => myForm.password, (newValue) => {  
+  console.log("Password Updated:", newValue);  
+});  
+
+const onMouseDown = (event) => {  
+  console.log('Mouse down on username input', event);  
+};  
+
+
   </script>

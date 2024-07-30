@@ -14,25 +14,27 @@
         
                     <div class="mx-3 d-inline-block">
                         
-                        {{ type }}
+                        {{ item.type }}
                     </div>
         
+                    <div>
+
+                                <div class="mx-3  d-inline-block">
+                                    <div for="title" class="form-label d-inline-block" >نام  وارد کننده : {{ adder.name }}  </div>
+                                    
+                                </div>
                     
-        
-                    <div class="mx-3  d-inline-block">
-                        <div for="title" class="form-label d-inline-block" >نام  وارد کننده : {{ adder.name }}  </div>
-                        
+                                <div class="mx-3  d-inline-block me-5">
+                                    <div for="title" class="form-label d-inline-block" >نام    تایید کننده : {{ viewer.name }} </div>
+                                    
+                                </div>
+                    
+                                <div class="mx-3  d-inline-block me-5">
+                                    <div for="title" class="form-label d-inline-block" >نام    مشاهده کننده : {{ verifier.name }} </div>
+                                    
+                                </div>
                     </div>
         
-                    <div class="mx-3  d-inline-block me-5">
-                        <div for="title" class="form-label d-inline-block" >نام    تایید کننده : {{ viewer.name }} </div>
-                        
-                    </div>
-        
-                    <div class="mx-3  d-inline-block me-5">
-                        <div for="title" class="form-label d-inline-block" >نام    مشاهده کننده : {{ verifier.name }} </div>
-                        
-                    </div>
         
                     
                     

@@ -9,6 +9,12 @@ class Item extends Model
 {
     use HasFactory;
 
+    protected $guarded = [] ;
+
+    public function scopeAdderVerifierViewer($query){
+        return $query->with('adder','verifier','viewer');
+    }
+
     public function adder(){
         return $this->belongsTo(User::class,'adder_id') ;
     }

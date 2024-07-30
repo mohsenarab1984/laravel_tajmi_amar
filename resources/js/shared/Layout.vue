@@ -26,15 +26,18 @@
 
 
 
-    <div class="container-fluid" style="direction: rtl">
-    <div class="row flex-nowrap">
-        <slot name="admin_slot"></slot>
-         <!-- <Admin_Sidebar /> -->
-        <div class="col py-3">
-            <slot />
-        </div>
-    </div>
-</div>
+    <div class="container-fluid" style="direction: rtl; min-height: 400px;">
+            <div class="row flex-nowrap">
+                <slot name="admin_slot">
+                    <Admin_Sidebar v-if="page.props.auth?.user && page.props.auth?.user.is_admin==1"   />
+                    <Cartabl_Sidebar v-if="page.props.auth?.user && page.props.auth?.user.is_admin !=1" />
+                </slot>
+                <!-- <Admin_Sidebar /> -->
+                <div class="col py-3">
+                    <slot />
+                </div>
+            </div>
+   </div>
 
 
 
@@ -53,6 +56,7 @@ import Header from "../Components/Header.vue";
 import Footer from "../Components/Footer.vue";
 
 import Admin_Sidebar from "@com/Admin_Sidebar.vue";
+import Cartabl_Sidebar from "@Components/Cartabl_Sidebar.vue";
 
 
 // const props = defineProps(["auth"]);

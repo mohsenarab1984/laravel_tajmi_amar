@@ -72,9 +72,18 @@ Route::get('/admin/report/create', function () {
     return Inertia::render('Admin/Report/Create');
 })->middleware('admin')->name('admin.report.create');
 
+
+
+Route::get('/report/', [ItemController::class,'index'])->middleware('auth');
+Route::get('/admin/report/', [ItemController::class,'index'])->middleware('auth');
+
+
 Route::get('/admin/report/show', function () {
     return Inertia::render('Admin/Report/Show');
 })->middleware('admin');
+
+
+Route::put('/admin/report/{id}/adder', [ItemController::class,'update'])->middleware('auth','adder');
 
 
 Route::get('/search/user/name', [UserController::class,'search_name']);
@@ -85,7 +94,7 @@ Route::post('/user/upload',[FileController::class,'store']);
 
 Route::get('/login', function () {
     return Inertia::render('Login');
-});
+})->name('login');
 Route::get('/admin/login', function () {
     return Inertia::render('Login');
 });

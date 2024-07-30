@@ -17,21 +17,22 @@
                 <div v-if="form.errors.type" class="color_red">{{ form.errors.type }}</div>
             </div>
 
-            <div class="mb-3 d-inline-block">
-                <div for="title" class="form-label ms-2 me-5" style="display: inline-block;">نوع : </div>
-                <input type="text" class="form-control d-inline-block" id="min" v-model="form.min" style="width: 150px;">
-                 
-                <div v-if="form.errors.min" class="color_red">{{ form.errors.min }}</div>
-            </div>
-
-            <div class="mb-3 d-inline-block">
-                <div for="title" class="form-label ms-2 me-5" style="display: inline-block;">نوع : </div>
-                <input type="text" class="form-control d-inline-block" id="min" v-model="form.max" style="width: 150px;">
-                 
-                <div v-if="form.errors.max" class="color_red">{{ form.errors.max }}</div>
-            </div>
+           
 
              <div>
+                    <div class="mb-3 d-inline-block">
+                      <div for="title" class="form-label ms-2 me-5" style="display: inline-block;">حداقل مقدار : </div>
+                      <input type="text" class="form-control d-inline-block" id="min" v-model="form.min" style="width: 150px;">
+                      
+                      <div v-if="form.errors.min" class="color_red">{{ form.errors.min }}</div>
+                  </div>
+
+                  <div class="mb-3 d-inline-block">
+                      <div for="title" class="form-label ms-2 me-5" style="display: inline-block;">حداکثر مقدار : </div>
+                      <input type="text" class="form-control d-inline-block" id="min" v-model="form.max" style="width: 150px;">
+                      
+                      <div v-if="form.errors.max" class="color_red">{{ form.errors.max }}</div>
+                  </div>
 
              </div>
 

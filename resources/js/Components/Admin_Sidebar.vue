@@ -68,6 +68,9 @@
                     <li class="w-100">
                         <Link href="/admin/report/create" class="nav-link px-0"> <span class="d-none d-sm-inline">ساخت آیتم گزارش</span>  </Link>
                     </li>
+                    <li class="w-100">
+                        <Link href="/admin/report/" class="nav-link px-0"> <span class="d-none d-sm-inline">    مشاهده ی گزارش ها</span>  </Link>
+                    </li>
                    
                      
                 </ul>

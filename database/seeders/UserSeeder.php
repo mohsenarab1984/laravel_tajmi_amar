@@ -33,5 +33,27 @@ class UserSeeder extends Seeder
             'password'=>Hash::make('boss'),
             'is_admin'=>0
         ]);
+
+        User::factory()->create([
+            'name' => '  آقای ساور   ',
+            'username' => 'user1',
+            'role'=>'  معاون برنامه ریزی ',
+            'password'=>Hash::make('user1'),
+            'is_admin'=>0
+        ]);
+        User::factory()->create([
+            'name' => ' آقای انسانی ',
+            'username' => 'user2',
+            'role'=>'  معاون  توسعه انسانی  ',
+            'password'=>Hash::make('user2'),
+            'is_admin'=>0
+        ]);
+        User::factory()->create([
+            'name' => '  دامداری ',
+            'username' => 'user3',
+            'role'=>'  معاونت امور دام   ',
+            'password'=>Hash::make('user3'),
+            'is_admin'=>0
+        ]);
     }
 }
