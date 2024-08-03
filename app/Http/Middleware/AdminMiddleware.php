@@ -17,10 +17,22 @@ class AdminMiddleware
     public function handle(Request $request, Closure $next): Response
     {
 
-        if(!request()->user() || (request()->user() && request()->user()->is_admin==0)){
-           return redirect('admin/login');
-            // dd('No Admin');
+        // if(!request()->user() || (request()->user() && request()->user()->is_admin==0)){
+        //    return redirect('admin/login');
+            
+        // }
+        if(!request()->user()){
+           return redirect('/login');
+            
         }
+
+        if($request->user()?->is_admin == 1){
+
+            return $next($request);
+        }
+
+        //dd('oxh');
+        return back()->withErrors(['myErrorText' => 'شما مجوز ادمین را ندارید']);
 
         return $next($request);
     }

@@ -12,6 +12,8 @@ use Inertia\Inertia;
 class ItemController extends Controller
 {
 
+    
+
     public function index(Request $request){
         $user_id = auth()->user()->id ;
         $all_items = Item::adderVerifierViewer()->where('adder_id',$user_id)->orWhere('verifier_id',$user_id)->orWhere('viewer_id',$user_id)->get();
@@ -22,41 +24,81 @@ class ItemController extends Controller
     public function update(Request $request,  $id){
         $type = $request->type;
         $data = [] ;
+        $validator_rule=[];
+
+        $item = Item::findOrFail($id);
+
+        // dd($request->all());
+
         if($type=='number'){
-           $data['input_value_new']= $request->input('input_value_new') ;
+                $data['input_value_new']= $request->input('input_value_new') ;
+
+                $validator_rule['input_value_new'] = ['required','numeric'];
+                if ($item->min) {  $validator_rule['input_value_new'][] = 'min:'.$item->min;    }  
+                if ($item->max) {   $validator_rule['input_value_new'][] = 'max:'.$item->max;  }  
+
+                $message = [
+                    'input_value_new.required' => 'انتخاب فیلد مقدار ضروری است ',  
+                    'input_value_new.numeric' => '  فیلد مقدار باید عددی باشد ',   
+                    'input_value_new.min' => 'حداقل مقدار مجاز برابر است با :  ' . $item->min . '.',  
+                    'input_value_new.max' => 'حداکثر مقدار مجاز برابر است با :  ' . $item->max . '.', 
+                 ] ;
         }else{
-           $data['input_ticket_new']= $request->input('input_ticket_new') ;
+                $data['input_ticket_new']=  $request->input('input_ticket_new') ;
+                $validator_rule['input_ticket_new'] = ['required'];
+                $message = [
+                    'input_ticket_new.required' => 'انتخاب فیلد نوع ضروری است ',  
+                ] ;
         }
-         //dd($request->all(), $id);
 
-         $item = Item::findOrFail($id);
+         //dd($data);
+       
+          $request->validate($validator_rule, $message) ;
+         $data['change'] = 1;
+         $data['accept'] = NULL;
 
-         $validator_rule['input_value_new'] = ['required','numeric'];
-         // Or you could use bracket notation for a more concise syntax:  
-        if ($item->min) {  
-            $validator_rule['input_value_new'][] = 'min:'.$item->min;  
-        }  
-
-        if ($item->max) {  
-            $validator_rule['input_value_new'][] = 'max:'.$item->max;  
-        }  
          
-          
-         // print_r($validator_rule);
-
-          //dd();
-          
-          $request->validate($validator_rule, [  
-            'input_value_new.required' => 'The number field is mandatory.',  
-            'input_value_new.numeric' => 'The input must be a valid number.',  
-            'input_value_new.min' => 'The number must be at least ' . $item->min . '.',  
-            'input_value_new.max' => 'The number may not be greater than ' . $item->max . '.',  
-        ]) ;
-
          $item->update($data) ;
+
+        
          return redirect()->back();
         //  $new_data =  $item-
         //  $item->update(['']);
+    }
+    public function update_verifier(Request $request, $id){
+        $item = Item::findOrFail($id);
+        $validated_data = $request->validate([
+            'accept'=>['required']
+        ]);
+        $validated_data['change']=0;
+        if($item->type  == 'number') { 
+             $validated_data['input_value']=$item->input_value_new ;
+         }
+        else {
+            $validated_data['input_ticket']=$item->input_ticket_new ;
+        } 
+       
+        $item->update($validated_data);
+
+         /// Append history
+        $item = $item->fresh(); /// get new updated row
+
+        $existingHistory = $item->history; // Assuming the history field exists  
+        $historyField = json_decode($existingHistory, true) ?? []; // Decode existing history  
+
+       // Step 4: Add the current item's data to the history array  
+       $historyField[] = $item->toArray(); // Save the current item (as an array)  
+
+       // Step 5: Encode the updated history  
+       $historyFieldEncoded = json_encode($historyField);  
+
+       // Step 6: Update the item's history field  
+       $item->update(['history' => $historyFieldEncoded]);    
+
+
+
+
+        return back() ;
     }
 
     public function save(Request $request){

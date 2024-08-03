@@ -36,18 +36,16 @@ Route::get('/admin', function () {
 })->middleware('admin');
 
 
-Route::get('/admin/operation/', [OperationController::class,'index'])->middleware('admin');
+Route::get('/operation/', [OperationController::class,'index'])->middleware('auth');
+
+
 Route::post('/admin/operation/create', [OperationController::class,'save_title'])->middleware('admin');
 
 Route::get('/admin/operation/create', function () {
     return Inertia::render('Admin/Operation/Create');
 })->middleware('admin')->name('admin.operation.create');
 
-Route::get('/admin/operation/{id}/edit', function ($id) {
-    $operation = Operation::find($id) ;
-    $menus = Menu::where('operation_id',$id)->OrderBy('id')->with('items.adder','items.verifier','items.viewer')->get();
-    return Inertia::render('Admin/Operation/Edit',['operation'=>$operation,'menus'=>$menus]);
-})->middleware('admin')->name('admin.operation.edit');
+Route::get('/operation/{id}/show', [OperationController::class,'show'])->middleware('auth')->name('operation.show');
 
 
 
@@ -84,6 +82,7 @@ Route::get('/admin/report/show', function () {
 
 
 Route::put('/admin/report/{id}/adder', [ItemController::class,'update'])->middleware('auth','adder');
+Route::put('/admin/report/{id}/verifier', [ItemController::class,'update_verifier'])->middleware('auth','verifier');
 
 
 Route::get('/search/user/name', [UserController::class,'search_name']);

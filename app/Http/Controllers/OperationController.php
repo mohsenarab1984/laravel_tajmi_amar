@@ -3,12 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Menu;
 use App\Models\Operation;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class OperationController extends Controller
 {
+
+    public function show($id){
+         $operation = Operation::find($id) ;
+         $menus = Menu::where('operation_id',$id)->OrderBy('id')->with('items.adder','items.verifier','items.viewer')->get();
+         return Inertia::render('Admin/Operation/Edit',['operation'=>$operation,'menus'=>$menus]);
+    }
+
     public function save_title(Request $request){
         $validated_data = $request->validate([
             'title'=>['min:3','required'],
@@ -24,7 +32,7 @@ class OperationController extends Controller
 
         //return Inertia::location(route('admin.operation.save_title'), ['operationId' => $operationId]);
 
-        return redirect()->route('admin.operation.edit',$operationId);
+        return redirect()->route('operation.show',$operationId);
 
 
 

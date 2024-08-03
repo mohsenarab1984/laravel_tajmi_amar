@@ -16,6 +16,7 @@ export default defineConfig({
             "@js": path.resolve(__dirname, "./resources/js"),
             "@com": path.resolve(__dirname, "./resources/js/Components"),
             "@Components": path.resolve(__dirname, "./resources/js/Components"),
+            "@helpers": path.resolve(__dirname, "./resources/js/helpers"),
         },
     },
 });

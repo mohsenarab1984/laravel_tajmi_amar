@@ -19,11 +19,13 @@ import { useForm, usePage } from '@inertiajs/vue3';
 import { defineEmits } from 'vue';
 import _ from 'lodash'
 import axios from 'axios'
+import { showErrorProps_Toast } from '@helpers/manage_errors';
 
 import { toast } from 'vue3-toastify'
 import 'vue3-toastify/dist/index.css';
 
 const emit=defineEmits(['cancelCreateMenu','successCreateMenu'])
+const page = usePage()
 
 const props = defineProps(['operation','parent_menu'])
 
@@ -31,7 +33,7 @@ function cancelCreateMenuClick(){
    emit('cancelCreateMenu')
 }
 
-
+const page_url = page.url
 
 const form_menu_create = useForm({
       title: null,
@@ -53,13 +55,24 @@ function create_menu(){
         form_menu_create.post("/admin/menu/save",{
             onError: (errors) => {
                         console.error("Error::",errors)
-                        toast.error('An error occurred. Please try again.');
+                        console.error("page.props.errors::",page.props.errors)
+                        showErrorProps_Toast(errors)
+                      
             }
           ,
             onSuccess:(response)=>{
-               toast.success('منوی جدید با موفقیت ساخته شد')
-               form_menu_create.title=null
-               emit('successCreateMenu')
+
+               // console.log('page.component: ',page.component,', page.url: ',page.url)
+               // console.log('response.component: ',response.component,', response.url: ',response.url)
+               // console.log('page_url: ',page_url)
+               // response.status === 302
+               
+
+                  toast.success('منوی جدید با موفقیت ساخته شد')
+                  console.log('response in Create component: ',response)
+                  form_menu_create.title=null
+                  emit('successCreateMenu')
+             
               // emit('cancelCreateMenu')
              
             },

@@ -17,9 +17,11 @@ return new class extends Migration
             $table->string('type')->default('number')->comment('number, ticket');
             $table->integer('menu_id')->default('0');
             $table->integer('input_value')->nullable();
-            $table->integer('input_ticket')->default('0');
+            $table->boolean('input_ticket')->default(false);
             $table->integer('input_value_new')->nullable();
-            $table->integer('input_ticket_new')->default('0');
+            $table->boolean('input_ticket_new')->default(false);
+            $table->boolean('change')->default(false);
+            $table->string('accept')->nullable();
             $table->integer('min')->nullable();
             $table->integer('max')->nullable();
             $table->integer('adder_id');

@@ -15,7 +15,7 @@
             <tr v-for="(operation, index) in operations" :key="index">  
             <td>{{ index + 1 }}</td>  
             <td> <Link href="/Admin/Operations/${}">  {{ operation.title }} </Link>  </td>  
-            <td> <Link :href="`/admin/operation/${operation.id}/edit`">  ویرایش </Link>  </td>  
+            <td> <Link :href="`/operation/${operation.id}/show`">  مشاهده </Link>  </td>  
             <td>{{ operation.date }}</td>  
             </tr>  
         </tbody>  

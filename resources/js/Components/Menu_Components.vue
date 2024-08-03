@@ -2,44 +2,67 @@
 
       
 
-      <div id="menu_component" class="mb-1 d-flex justify-space-between" style="border: 1px solid #ccc; max-width: 1000px; padding: 5px 10px; background-color: #eee; justify-content: space-between;">
-                 
-                  
-                 <div v-if="!show_edit" class="menu_title" style="  display: inline-block;"   > 
-                     <span v-if="!show_submenu_list" class="cursor-pointer fw-bold mx-2" @click="set_show_submenu_list(true)">+ </span>   
-                     <span v-else class="cursor-pointer fw-bold mx-2" @click="set_show_submenu_list(false)">- </span>
-                    
-                      {{ menu.title }}
-                 </div>
-                  
-                 <div class="d-inline-block">
+      <div id="menu_component" class="mb-1" style="border: 1px solid #ccc; max-width: 1000px; padding: 5px 10px; background-color: #eee; justify-content: space-between;">
+                 <div class=" d-flex justify-space-between">
 
-                        <input v-if="show_edit" v-model="data_form.title" type="text" class="form-control menu_input"  placeholder="نام منو"   style="max-width: 400px; display: inline-block;">
-                          
-                          
-                        <div v-if="!show_edit" class="d-inline-block" >
-                          
-                                  
-                                <button class="btn btn-sm edit mx-1 item_btn " id="item_create"  @click="toggle_show_item_create" > ساخت آیتم  </button>
-
-                                <button class="btn btn-warning btn-sm edit mx-1 " id="edit"  @click="show_edit=!show_edit" > ویرایش  </button>
-                                <button class="mx-1 btn btn-danger btn-sm edit " id="delete"  @click="confirmDelete" > X  </button>
-                                <button class="mx-1 btn btn-primary btn-sm edit " id="delete"    title="ساخت زیر منو" @click="set_show_submenu_create">  +    </button>
-                                <!-- <button class="mx-1 btn btn-secondary btn-sm edit " id="delete"    title="ساخت زیر منو" @click="toggle_show_submenu_list" >  زیر منوها    </button> -->
-                                <!-- <button class="btn btn-success btn-sm edit mx-2" id="edit"  @click="()=>btnClickEdit(menu.id)" > اضافه کردن زیر منو </button> -->
-                          
-        
+                        <div v-if="!show_edit" class="menu_title d-inline-block" style=" "   > 
                             
+                            
+                              {{ menu.title }}
                         </div>
-
-                        <div  v-if="show_edit" class="d-inline-block my-1 ">
-                  
-                              <button class="btn btn-primary btn-sm  " @click="updateMenu"  >   اعمال تغییرات </button>
-                              <button class="btn btn-secondary cancel mx-3 btn-sm"    @click="show_edit=!show_edit; data_form.title=menu.title ">   لغو   </button>
+                          
+                        <div class="d-inline-block">
+        
+                                <input v-if="show_edit" v-model="data_form.title" type="text" class="form-control menu_input"  placeholder="نام منو"   style="max-width: 400px; display: inline-block;">
+                                  
+                                  
+                                <div v-if="!show_edit" class="d-inline-block" >
+                                        
+                                        <div>
+        
+                                            <button class="btn btn-sm edit mx-1 item_btn " id="item_create"  @click="toggle_show_item_create" > ساخت آیتم  </button>
+            
+                                            <button class="btn btn-warning btn-sm edit mx-1 " id="edit"  @click="show_edit=!show_edit" > ویرایش  </button>
+                                            <button class="mx-1 btn btn-danger btn-sm edit " id="delete"  @click="confirmDelete" > X  </button>
+                                            <button class="mx-1 btn btn-primary btn-sm edit " id="delete"    title="ساخت زیر منو" @click="set_show_submenu_create">  +    </button>
+                                        </div>
+                                        
+                                          
+                                        <!-- <button class="mx-1 btn btn-secondary btn-sm edit " id="delete"    title="ساخت زیر منو" @click="toggle_show_submenu_list" >  زیر منوها    </button> -->
+                                        <!-- <button class="btn btn-success btn-sm edit mx-2" id="edit"  @click="()=>btnClickEdit(menu.id)" > اضافه کردن زیر منو </button> -->
+                                  
+                
+                                    
+                                </div>
+        
+                                <div  v-if="show_edit" class="d-inline-block my-1 ">
+                          
+                                      <button class="btn btn-primary btn-sm  " @click="updateMenu"  >   اعمال تغییرات </button>
+                                      <button class="btn btn-secondary cancel mx-3 btn-sm"    @click="show_edit=!show_edit; data_form.title=menu.title ">   لغو   </button>
+                                </div>
+                              
+        
                         </div>
-                       
-
                  </div>
+                 <div>
+                                          <button class="btn btn-sm" @click="toggle_show_submenu_list">
+                                           
+                                            <span v-if="!show_submenu_list && sub_menus.length>0 " class="cursor-pointer fw-bold mx-2" >+ </span>   
+                                            <span v-if="show_submenu_list && sub_menus.length>0 " class="cursor-pointer fw-bold mx-2"  >- </span>
+                                            <span> مشاهده ی زیرمنو </span>
+                                            <span> ({{ sub_menus.length }}) </span>
+                                          
+                                          </button>
+
+                                          <button class="btn btn-sm" @click="toggle_show_subItem_list">
+                                           
+                                            <span v-if="!show_subItems_list && menu.items.length" class="cursor-pointer fw-bold mx-2" >+ </span>   
+                                            <span v-if="show_subItems_list && menu.items.length" class="cursor-pointer fw-bold mx-2"  >- </span>
+                                            <span> مشاهده ی گزارش ها </span>
+                                            <span> ({{ menu.items.length }})</span>
+                                          
+                                          </button>
+                  </div>
              
                    <!-- <div v-if="form_operation.errors.title" class="color_red">{{ form_operation.errors.title }}</div> -->
          </div>
@@ -49,21 +72,23 @@
                             
           </div>
 
-           
+          <Create_Menu_Component v-if="show_submenu_create" :operation="operation" :parent_menu="menu" @cancelCreateMenu="set_show_submenu_create(false)"
+          @successCreateMenu="successCreateMenuFunction" class="px-5" /> 
 
-          <Item v-for="item in menu.items " :item="{...item}" style="background: #def1d9;" />
+        
 
          <div class="px-5" v-if="menu" style="">
            
-           <div v-if="show_submenu_list">
-             <!-- <Menu_List :menus="sub_menus" :operation="operation"  /> -->
-             <Menu_List :menus="menus" :parent_menu="menu" :operation="operation"  />
-          </div>
+            <div v-if="show_submenu_list">
+              <!-- <Menu_List :menus="sub_menus" :operation="operation"  /> -->
+              <Menu_List :menus="menus" :parent_menu="menu" :operation="operation"  />
+            </div>
 
-            <Create_Menu_Component v-if="show_submenu_create" :operation="operation" :parent_menu="menu" @cancelCreateMenu="set_show_submenu_create(false)"
-            @successCreateMenu="successCreateMenuFunction" />
 
          </div>
+
+         <Items :items="menu.items" :parent_menu="menu" :show="show_subItems_list"  />
+         <!-- <Item class="mx-5" v-for="item in menu.items " :item="{...item}" style="background: #def1d9;" /> -->
 
            
        
@@ -88,6 +113,7 @@ import Menu_List from './Menu_List.vue';
 import Item_Components from './Item_Components.vue';
 
 import Item from './Item.vue';
+import Items from './Items.vue';
 
 const props = defineProps({
     menu: Object,
@@ -95,18 +121,27 @@ const props = defineProps({
     operation: Object
 })
 
+ 
+
 const show_submenu_list = ref(false)
+const show_subItems_list = ref(false)
 const show_submenu_create = ref(false)
 const show_item_create = ref(false)
 
-const sub_menus=ref([])
+ const sub_menus=ref([])
+
 
 function set_show_submenu_list(val=true){
   show_submenu_list.value = val
 }
+
 function toggle_show_submenu_list(){
   show_submenu_list.value = !show_submenu_list.value
 }
+function toggle_show_subItem_list(){
+  show_subItems_list.value = !show_subItems_list.value
+}
+
 function set_show_submenu_create(val=true){
   show_submenu_create.value = val
 }
