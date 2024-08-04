@@ -46,9 +46,7 @@
                                         <button @click="openInputfieldBox">ورود مقدار   <span v-if="has_value">    جدید</span>  </button>
                                         
                             </div>
-                            <div class="d-inline-block   py-1 px-3 mx-2" v-if="false">
-                                         SHOW
-                            </div>
+                            
                       </div>
                 </div>
 
@@ -93,11 +91,8 @@
                      
                 </div>
 
-                <hr>
-
-                 <div>
-                    {{ JSON.parse(item.history)  }}
-                 </div>
+                
+               
     
                 
                 
@@ -128,6 +123,7 @@ const has_value = computed(()=>{
     return item_accepted.value || item_rejected.value || props.item.change
 })
 
+// تاریخ شمسی محلی  timezone convert jajali local persian 
 const jalaliDate= computed(()=>(date)=>moment(date).locale('fa').format('jYYYY/jM/jD HH:mm:ss'))
 
 // const jalaliDate_ = moment(createdAt).locale('fa').format('jYYYY/jM/jD HH:mm:ss');

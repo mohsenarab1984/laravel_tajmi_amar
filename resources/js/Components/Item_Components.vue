@@ -157,6 +157,42 @@ const form = useForm({
        close_seach_fn()
     }   
 
+          form.errors=""
+          axios({
+          method: "post",
+          url: `/search/select/${selected_result.id}`,
+          data: {
+            username: "user",
+            password: "pass",
+          },
+          }).then((response) => {
+            console.log('json response:: ',response);
+          }).catch(error=>{
+                       
+                        if (error.response) {  
+                    // The request was made and the server responded with a status code  
+                                 if(error.response.status==422){
+                                   // validation error
+                                   
+                                   toast.error(error.response.data.message || 'خطا در  اعتبارسنجی اطلاعات ورودی  ')
+                                   form.errors=error.response.data?.errors
+                                 }else{
+                                   toast.error(error.response.data.message || 'خطای نامشخص')
+                                 }
+                            //.error('Error Status:', error.response.status);  
+                            console.error('error.response.data', error.response.data,'error.response.status: ',error.response.status);  
+                           // console.error('Error Message:', error.response.data.message || 'No specific message provided');  
+                       } else if (error.request) {  
+                    // The request was made but no response was received  
+                          console.error('No response received:', error.request);  
+                          toast.error('خطایی اتفاق افتاده است')
+                      } else {  
+                    // Something happened in setting up the request  
+                            console.error('Error:', error.message);  
+                            toast.error('خطایی اتفاق افتاده است')
+                     }  
+          });
+
 
    
     console.log('selected_result: ',selected_result)

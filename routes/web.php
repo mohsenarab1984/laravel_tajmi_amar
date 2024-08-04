@@ -7,6 +7,7 @@ use App\Http\Controllers\ItemController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\OperationController;
 use App\Http\Controllers\PhotoController;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\UserController;
 use App\Models\Blog;
 use App\Models\Menu;
@@ -86,6 +87,8 @@ Route::put('/admin/report/{id}/verifier', [ItemController::class,'update_verifie
 
 
 Route::get('/search/user/name', [UserController::class,'search_name']);
+
+Route::post('/search/select/{user_search_id}',[SearchController::class,'select_user'] );
 
 
 Route::get('/user/upload',[FileController::class,'upload_form']);
