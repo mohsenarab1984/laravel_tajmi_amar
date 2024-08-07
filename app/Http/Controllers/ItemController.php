@@ -102,7 +102,7 @@ class ItemController extends Controller
     }
 
     public function save(Request $request){
-        ////  dd($request->all());
+       // dd($request->all());
           $validated_data = $request->validate([
               'title'=>['min:3','required'],
               'type'=> ['required'],
@@ -110,6 +110,8 @@ class ItemController extends Controller
               'adder_id'=> ['required'],
               'verifier_id'=> ['required'],
               'viewer_id'=> ['required'],
+              'viewer_arr'=> ['required','array'],
+              'viewer_arr.*' => 'exists:users,id',
               'min'=> [],
               'max'=> [],
           ]);
@@ -126,6 +128,8 @@ class ItemController extends Controller
           $item->max = $validated_data['max'] ;
         
           $item->save();
+          $item->viewers()->sync($validated_data['viewer_arr']);
+
   
          return redirect()->back();
   

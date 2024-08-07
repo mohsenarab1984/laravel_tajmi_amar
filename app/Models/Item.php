@@ -12,7 +12,7 @@ class Item extends Model
     protected $guarded = [] ;
 
     public function scopeAdderVerifierViewer($query){
-        return $query->with('adder','verifier','viewer');
+        return $query->with('adder','verifier','viewer','viewers');
     }
 
     public function adder(){
@@ -23,5 +23,8 @@ class Item extends Model
     }
     public function viewer(){
         return $this->belongsTo(User::class,'viewer_id') ;
+    }
+    public function viewers(){
+        return $this->belongsToMany(User::class, 'items_viewers','item_id','viewer_id')->withTimestamps(); 
     }
 }

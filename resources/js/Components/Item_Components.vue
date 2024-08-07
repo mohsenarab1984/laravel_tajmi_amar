@@ -38,6 +38,7 @@
 
             <div class="mb-3  d-inline-block">
                 <div for="title" class="form-label d-inline-block" >نام  وارد کننده :  </div>
+                <div style="display: inline-block" class="mx-2">      <i class="fas fa-search" @click="showSearchBox.adder=true"></i>      </div>
                 <SearchName   :show="showSearchBox.adder" @close_search="close_seach_fn"  @selectRowEmit="(res)=>updaterResults(res,'adder')" @clickSearchIcon="showSearchBox.adder=true" 
                    class="d-inline-block" />  
                 
@@ -46,6 +47,7 @@
 
             <div class="mb-3  d-inline-block me-5">
                 <div for="title" class="form-label d-inline-block" >نام    تایید کننده :  </div>
+                <div style="display: inline-block" class="mx-2">      <i class="fas fa-search" @click="showSearchBox.verifier=true"></i>      </div>
                 <SearchName   :show="showSearchBox.verifier" @close_search="close_seach_fn"  @selectRowEmit="(res)=>updaterResults(res,'verifier')" @clickSearchIcon="showSearchBox.verifier=true" 
                    class="d-inline-block" />  
                 
@@ -53,9 +55,16 @@
             </div>
 
             <div class="mb-3  d-inline-block me-5">
-                <div for="title" class="form-label d-inline-block" >نام    مشاهده کننده :  </div>
+                <div for="title" class="form-label d-inline-block" >نام    مشاهده کننده :  </div> 
+                <div style="display: inline-block" class="mx-2">      <i class="fas fa-search" @click="showSearchBox.viewer=true"></i>      </div>
                 <SearchName   :show="showSearchBox.viewer" @close_search="close_seach_fn"  @selectRowEmit="(res)=>updaterResults(res,'viewer')" @clickSearchIcon="showSearchBox.viewer=true" 
                    class="d-inline-block" />  
+
+                   <div class="d-inline-block" style="max-width: 400px;">
+                          <div v-for="viewer in form.viewer_arr " class="d-inline-block border mx-2 p-1">
+                                {{ viewer.name }}
+                          </div>
+                   </div>
                 
                 <div v-if="form.errors.viewer_id" class="color_red">{{ form.errors.viewer_id }}</div>
             </div>
@@ -93,6 +102,7 @@ const emit = defineEmits(['toggle_show'])
   import  ModalCustomized from './Modal.vue';
   import MyModal from './MyModal.vue';
   import SearchName from './SearchName.vue';
+import { MyErrorHandling } from '../helpers/manage_errors';
 
   
 const form_search = useForm({
@@ -116,6 +126,7 @@ const form = useForm({
       adder_id:null,
       viewer_id:null,
       verifier_id: null,
+      viewer_arr:[],
       menu_id: null,
       min: null,
       max: null
@@ -154,6 +165,10 @@ const form = useForm({
     }  
     if (field_name=="viewer") {
        form.viewer_id= selected_result.id
+       if(!form.viewer_arr.includes(selected_result)){
+
+         form.viewer_arr.push(selected_result)
+       }
        close_seach_fn()
     }   
 
@@ -168,29 +183,34 @@ const form = useForm({
           }).then((response) => {
             console.log('json response:: ',response);
           }).catch(error=>{
+
+                   const  {message, errors,...other}= MyErrorHandling(error)
+                    if (message) toast(message)
+                    form.errors = errors
+                    console.log(other)
                        
-                        if (error.response) {  
-                    // The request was made and the server responded with a status code  
-                                 if(error.response.status==422){
-                                   // validation error
+                    //     if (error.response) {  
+                    // // The request was made and the server responded with a status code  
+                    //              if(error.response.status==422){
+                    //                // validation error
                                    
-                                   toast.error(error.response.data.message || 'خطا در  اعتبارسنجی اطلاعات ورودی  ')
-                                   form.errors=error.response.data?.errors
-                                 }else{
-                                   toast.error(error.response.data.message || 'خطای نامشخص')
-                                 }
-                            //.error('Error Status:', error.response.status);  
-                            console.error('error.response.data', error.response.data,'error.response.status: ',error.response.status);  
-                           // console.error('Error Message:', error.response.data.message || 'No specific message provided');  
-                       } else if (error.request) {  
-                    // The request was made but no response was received  
-                          console.error('No response received:', error.request);  
-                          toast.error('خطایی اتفاق افتاده است')
-                      } else {  
-                    // Something happened in setting up the request  
-                            console.error('Error:', error.message);  
-                            toast.error('خطایی اتفاق افتاده است')
-                     }  
+                    //                toast.error(error.response.data.message || 'خطا در  اعتبارسنجی اطلاعات ورودی  ')
+                    //                form.errors=Object.values(error.response.data?.errors).flat() 
+                    //              }else{
+                    //                toast.error(error.response.data.message || 'خطای نامشخص')
+                    //              }
+                    //         //.error('Error Status:', error.response.status);  
+                    //         console.error('error.response.data', error.response.data,'error.response.status: ',error.response.status);  
+                    //        // console.error('Error Message:', error.response.data.message || 'No specific message provided');  
+                    //    } else if (error.request) {  
+                    // // The request was made but no response was received  
+                    //       console.error('No response received:', error.request);  
+                    //       toast.error('خطایی اتفاق افتاده است')
+                    //   } else {  
+                    // // Something happened in setting up the request  
+                    //         console.error('Error:', error.message);  
+                    //         toast.error('خطایی اتفاق افتاده است')
+                    //  }  
           });
 
 
@@ -208,7 +228,9 @@ const sendData = () => {
   //  console.log('form: ',form)
   // return ;
     
-      form.post('/admin/item/save',{
+      form.
+        transform((data)=>({...data,viewer_arr:form.viewer_arr.map(v=>v.id)}))
+        .post('/admin/item/save',{
             onError: (errors) => {
             
                   toast.error('An error occurred. Please try again.');
@@ -275,5 +297,9 @@ const handleAdderNameChange =  _.debounce(()=>{
 
   .w_500 {
     width: 500px;
+  }
+
+  .fa-search{
+    cursor: pointer;
   }
   </style>

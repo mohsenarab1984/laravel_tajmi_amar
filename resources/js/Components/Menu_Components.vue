@@ -45,7 +45,7 @@
                         </div>
                  </div>
                  <div>
-                                          <button class="btn btn-sm" @click="toggle_show_submenu_list">
+                                          <button class="btn btn-sm" @click="toggle_show_submenu_list" v-show="false">
                                            
                                             <span v-if="!show_submenu_list && sub_menus.length>0 " class="cursor-pointer fw-bold mx-2" >+ </span>   
                                             <span v-if="show_submenu_list && sub_menus.length>0 " class="cursor-pointer fw-bold mx-2"  >- </span>
@@ -54,12 +54,21 @@
                                           
                                           </button>
 
-                                          <button class="btn btn-sm" @click="toggle_show_subItem_list">
+                                          <button class="btn btn-sm" @click="toggle_show_subItem_list" v-show="false">
                                            
                                             <span v-if="!show_subItems_list && menu.items.length" class="cursor-pointer fw-bold mx-2" >+ </span>   
                                             <span v-if="show_subItems_list && menu.items.length" class="cursor-pointer fw-bold mx-2"  >- </span>
                                             <span> مشاهده ی گزارش ها </span>
                                             <span> ({{ menu.items.length }})</span>
+                                          
+                                          </button>
+
+                                          <button class="btn btn-sm" @click="toggle_show_subinfo">
+                                           
+                                            <span v-if="!show_subItems_list && (menu.items.length + sub_menus.length)" class="cursor-pointer fw-bold mx-2" >+ </span>   
+                                            <span v-if="show_subItems_list && (menu.items.length + sub_menus.length)" class="cursor-pointer fw-bold mx-2"  >- </span>
+                                            <span> مشاهده ی  اطلاعات </span>
+                                            <span> ({{ menu.items.length + sub_menus.length  }})</span>
                                           
                                           </button>
                   </div>
@@ -141,6 +150,10 @@ function toggle_show_submenu_list(){
 function toggle_show_subItem_list(){
   show_subItems_list.value = !show_subItems_list.value
 }
+function toggle_show_subinfo(){
+  show_subItems_list.value = !show_subItems_list.value
+  show_submenu_list.value = !show_submenu_list.value
+}
 
 function set_show_submenu_create(val=true){
   show_submenu_create.value = val
@@ -194,6 +207,8 @@ const deleteItem = () => {
   })
 
 }  
+
+console.log('05/17 menu: ',props.menu)
 
 
 const data_form = useForm({

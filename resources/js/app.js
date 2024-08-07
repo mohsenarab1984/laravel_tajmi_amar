@@ -3,6 +3,8 @@ import { createInertiaApp } from "@inertiajs/vue3";
 import { Link, Head } from "@inertiajs/vue3";
 import Layout from "@js/shared/Layout.vue";
 import Layout_Admin from "@js/shared/Layout_Admin.vue";
+import 'vue3-toastify/dist/index.css'; // Import the css  
+import '../css/app.css'
 
 const pages = import.meta.glob("./Pages/**/*.vue", { eager: true });
 

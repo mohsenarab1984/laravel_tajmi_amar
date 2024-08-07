@@ -52,9 +52,7 @@ Route::get('/operation/{id}/show', [OperationController::class,'show'])->middlew
 
 
 
-Route::get('/admin/users', function () {
-    return Inertia::render('Admin/Users/Index');
-})->middleware('admin');
+Route::get('/admin/users', [UserController::class,'all_user'])->middleware('admin');
 
 Route::get('/admin/menu/create', [MenuController::class,'create'])->middleware('admin');
 Route::post('/admin/menu/save', [MenuController::class,'save'])->middleware('admin');
@@ -89,6 +87,7 @@ Route::put('/admin/report/{id}/verifier', [ItemController::class,'update_verifie
 Route::get('/search/user/name', [UserController::class,'search_name']);
 
 Route::post('/search/select/{user_search_id}',[SearchController::class,'select_user'] );
+Route::get('/search/frequest',[SearchController::class,'frequest_search'] );
 
 
 Route::get('/user/upload',[FileController::class,'upload_form']);

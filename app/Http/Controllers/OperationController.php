@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Item;
 use App\Models\Menu;
 use App\Models\Operation;
 use Illuminate\Http\Request;
@@ -13,8 +14,41 @@ class OperationController extends Controller
 
     public function show($id){
          $operation = Operation::find($id) ;
-         $menus = Menu::where('operation_id',$id)->OrderBy('id')->with('items.adder','items.verifier','items.viewer')->get();
-         return Inertia::render('Admin/Operation/Edit',['operation'=>$operation,'menus'=>$menus]);
+         $menus = Menu::where('operation_id',$id)->OrderBy('id')->with('items.adder','items.verifier','items.viewer','items.viewers')->get();
+       
+        /// $item = Item::where('id',19)->with('viewers')->get();
+        // //dd($item);
+
+         
+         ////return Inertia::render('Admin/Operation/Edit',['operation'=>$operation,'menus'=>$menus]);
+
+
+
+        $user_id = auth()->user()->id;  
+        $operation = Operation::find($id);  
+
+        $user_id = auth()->user()->id;  
+        $menus = Menu::where('menus.operation_id', $id)  
+            ->with(['items' => function($query) use ($user_id) {  
+                $query->where(function($query) use ($user_id) {  
+                    $query->where('items.adder_id', $user_id)  
+                          ->orWhere('items.verifier_id', $user_id);  
+                })  
+                ->orWhereHas('viewers', function ($query) use ($user_id) {  
+                    $query->where('viewer_id', $user_id); // This checks if the viewer_id matches the current user id  
+                })  
+                ->with(['adder', 'verifier', 'viewers']);  
+            }])  
+            ->orderBy('menus.id')  
+            ->get()  
+            ->toArray();
+
+           //dd(Menu::with('items')->get()->toArray());
+
+         
+        //dd($menus);
+
+    return Inertia::render('Admin/Operation/Edit', ['operation' => $operation, 'menus' => $menus]); 
     }
 
     public function save_title(Request $request){

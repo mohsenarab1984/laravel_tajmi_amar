@@ -4,7 +4,7 @@
 
               
      
-        <div class="my-2" style="padding: 0 3rem;">
+        <div class="my-2 py-2" style="padding: 0 3rem;">
                 <div class="mx-3 d-inline-block">
                 
                     
@@ -76,17 +76,44 @@
                             </div>
                 
                             <div class="mx-3  d-inline-block me-5">
-                                <div for="title" class="form-label d-inline-block" >نام    مشاهده کننده : {{ viewer.name }} </div>
+                                <div for="title" class="form-label d-inline-block" >نام    مشاهده کننده :   </div>
+
+                                <div class="d-inline-block" style="max-width: 400px;">
+                                        <div v-for="viewer in viewers " class="d-inline-block border mx-2 p-1">
+                                                {{ viewer?.name }}
+                                        </div>
+
+                                        <!-- <div>
+                                            {{ viewers }}
+                                        </div> -->
+                                </div>
                                 
                             </div>
+
+                            <!-- <div>
+                                item.adder:   {{ item.adder }}
+                            </div>
+                            <div>
+                                item.verifier:   {{ item.verifier }}
+                            </div>
+                            <div>
+                                item.viewers:   {{ item.viewers }}
+                            </div> -->
                 </div>
 
                 <div>
-                      <div v-for="(item_history,index) in JSON.parse(item.history) ">
-                         <span class="ms-5"> {{ item_history.input_value }}</span> 
-                         
-                         <span>تاریخ تایید:</span>
-                         <span class="mx-3">  {{  jalaliDate(item_history.updated_at.split(" ").reverse().join("-")) }}</span> 
+                      <div class="cursor_pointer" style="color: green; " @click="toggleShowHistory"> 
+                        <span v-if="!showHistory">مشاهده</span> <span v-if="showHistory">X</span> <span v-if="showHistory">بستن</span>   تاریخچه مقادیر  
+                     </div>
+                      
+                      <div class="border p-2 rounded mb-2" v-if="showHistory">
+
+                          <div v-for="(item_history,index) in JSON.parse(item.history) ">
+                             <span class="ms-5"> {{ item_history.input_value }}</span> 
+                             
+                             <span>تاریخ تایید:</span>
+                             <span class="mx-3">  {{  jalaliDate(item_history.updated_at) }}</span> 
+                          </div>
                       </div>
                      
                 </div>
@@ -114,6 +141,10 @@ import moment from 'moment-jalaali';
 
 const page = usePage();
 const user = computed(() => page.props.auth?.user ?? null);
+
+const showHistory=ref(false)
+const setShowHistory = (val)=> { showHistory.value = val }
+const toggleShowHistory = ()=> { showHistory.value = !showHistory.value }
 
 // computed has_value = ()=>{
 //     return item_accepted() || item_rejected() || item.change
@@ -220,6 +251,6 @@ const item_rejected = computed(()=>props.item.accept=='no')
 const item_no_action = computed(()=>!props.item.accept)
 
 
-const {title, adder, viewer, verifier } = props.item
+const {title, adder, viewer, verifier, viewers } = props.item
 
 </script>
