@@ -36,35 +36,43 @@
 
              </div>
 
-            <div class="mb-3  d-inline-block">
-                <div for="title" class="form-label d-inline-block" >نام  وارد کننده :  </div>
+            <div class="mb-3  d-inline-block" style="position: relative;">
+                <div for="title" class="form-label d-inline-block"  >نام  وارد کننده :  </div>
+              
                 <div style="display: inline-block" class="mx-2">      <i class="fas fa-search" @click="showSearchBox.adder=true"></i>      </div>
-                <SearchName   :show="showSearchBox.adder" @close_search="close_seach_fn"  @selectRowEmit="(res)=>updaterResults(res,'adder')" @clickSearchIcon="showSearchBox.adder=true" 
-                   class="d-inline-block" />  
+                <SearchName    :show="showSearchBox.adder" @close_search="close_seach_fn"  @selectRowEmit="(res)=>updaterResults(res,'adder')"
+                   @clickSearchIcon="showSearchBox.adder=true"  class="d-inline-block" style="position: absolute; top:0; right: 0;" v-if="showSearchBox.adder" />  
                 
+                <div class="d-inline-block">{{ form.adder_name }}</div>  
                 <div v-if="form.errors.adder_id" class="color_red">{{ form.errors.adder_id }}</div>
             </div>
 
-            <div class="mb-3  d-inline-block me-5">
+            <div class="mb-3  d-inline-block me-5" style="position: relative;">
                 <div for="title" class="form-label d-inline-block" >نام    تایید کننده :  </div>
+               
                 <div style="display: inline-block" class="mx-2">      <i class="fas fa-search" @click="showSearchBox.verifier=true"></i>      </div>
                 <SearchName   :show="showSearchBox.verifier" @close_search="close_seach_fn"  @selectRowEmit="(res)=>updaterResults(res,'verifier')" @clickSearchIcon="showSearchBox.verifier=true" 
-                   class="d-inline-block" />  
+                   class="d-inline-block" style="position: absolute; top:0; right: 0;"   v-if="showSearchBox.verifier" />  
                 
-                <div v-if="form.errors.verifier_id" class="color_red">{{ form.errors.verifier_id }}</div>
+                <div class="d-inline-block">{{ form.verifier_name }}</div>
+                   <div v-if="form.errors.verifier_id" class="color_red">{{ form.errors.verifier_id }}</div>
             </div>
 
-            <div class="mb-3  d-inline-block me-5">
+            <div class="mb-3  d-inline-block me-5" style="position: relative;">
                 <div for="title" class="form-label d-inline-block" >نام    مشاهده کننده :  </div> 
+               
                 <div style="display: inline-block" class="mx-2">      <i class="fas fa-search" @click="showSearchBox.viewer=true"></i>      </div>
                 <SearchName   :show="showSearchBox.viewer" @close_search="close_seach_fn"  @selectRowEmit="(res)=>updaterResults(res,'viewer')" @clickSearchIcon="showSearchBox.viewer=true" 
-                   class="d-inline-block" />  
+                   class="d-inline-block" style="position: absolute; top:0; right: 0;" v-if="showSearchBox.viewer"  />  
 
-                   <div class="d-inline-block" style="max-width: 400px;">
-                          <div v-for="viewer in form.viewer_arr " class="d-inline-block border mx-2 p-1">
-                                {{ viewer.name }}
-                          </div>
-                   </div>
+                <div class="d-inline-block" style="max-width: 400px; ">
+                      <div v-for="viewer in form.viewer_arr " class="d-inline-block border mx-2 p-1" style="position: relative;">
+                            {{ viewer.name }}
+                            <!-- <div class="close_icon"   > X</div> -->
+                              <closeButton bg="#999" @on_close="removeName(viewer.id)" />
+                              
+                      </div>
+                </div>
                 
                 <div v-if="form.errors.viewer_id" class="color_red">{{ form.errors.viewer_id }}</div>
             </div>
@@ -93,6 +101,7 @@
   import { toast } from 'vue3-toastify'
   import 'vue3-toastify/dist/index.css';
 //   import Modal from './Modal.vue';
+import closeButton from './closeButton.vue';
 
 const props = defineProps(['menu'])
 const emit = defineEmits(['toggle_show'])
@@ -124,7 +133,9 @@ const form = useForm({
       title:'',
       type:'',
       adder_id:null,
+      adder_name:null,
       viewer_id:null,
+      viewer_name:null,
       verifier_id: null,
       viewer_arr:[],
       menu_id: null,
@@ -150,9 +161,17 @@ const form = useForm({
         showSearchBox.viewer = false
   }
 
+  function removeName(id,role="viewer"){
+    if(role == "viewer"){
+      
+      form.viewer_arr = form.viewer_arr.filter(v=>v.id !=id)
+    }
+  }
+
   const updaterResults = (selected_result, field_name)=>{
     if (field_name=="adder")  {
          form.adder_id= selected_result.id
+         form.adder_name= selected_result.name
          close_seach_fn()
 
          console.log('updaterResults: ',selected_result)
@@ -160,14 +179,17 @@ const form = useForm({
     } 
     if (field_name=="verifier") {
         form.verifier_id= selected_result.id
+        form.verifier_name= selected_result.name
         close_seach_fn()
 
     }  
     if (field_name=="viewer") {
        form.viewer_id= selected_result.id
-       if(!form.viewer_arr.includes(selected_result)){
+       if(!form.viewer_arr.map(v=>v.id).includes(selected_result.id)){
 
          form.viewer_arr.push(selected_result)
+       }else{
+        console.log('تکراری است !!');
        }
        close_seach_fn()
     }   

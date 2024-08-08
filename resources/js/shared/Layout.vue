@@ -64,7 +64,7 @@ import Cartabl_Sidebar from "@Components/Cartabl_Sidebar.vue";
 const page = usePage();
 
 console.log("page.props.user: ", page.props.auth.user);
-console.log("page.props.user: ", page.props);
+console.log("page.props: ", page.props);
 
 const user = computed(() => page.props.auth.user);
 

@@ -7,3 +7,19 @@
 .cursor_pointer{
     cursor: pointer;
 }
+
+.close_icon{
+    justify-content: center;
+    position: absolute;
+    display: flex;
+    top: -7px;
+    left: -5px;
+    width: 20px;
+    height: 20px;
+    border-radius: 100%;
+    background-color: #bf1414;
+    color: rgb(255, 255, 255);
+    align-items: center;
+    cursor: pointer;
+    z-index: 10;
+}

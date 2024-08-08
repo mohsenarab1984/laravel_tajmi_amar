@@ -27,21 +27,32 @@ class OperationController extends Controller
         $user_id = auth()->user()->id;  
         $operation = Operation::find($id);  
 
-        $user_id = auth()->user()->id;  
-        $menus = Menu::where('menus.operation_id', $id)  
-            ->with(['items' => function($query) use ($user_id) {  
-                $query->where(function($query) use ($user_id) {  
-                    $query->where('items.adder_id', $user_id)  
-                          ->orWhere('items.verifier_id', $user_id);  
-                })  
-                ->orWhereHas('viewers', function ($query) use ($user_id) {  
-                    $query->where('viewer_id', $user_id); // This checks if the viewer_id matches the current user id  
-                })  
-                ->with(['adder', 'verifier', 'viewers']);  
-            }])  
-            ->orderBy('menus.id')  
-            ->get()  
-            ->toArray();
+        $user_id = auth()->user()->id; 
+        if(auth()->user()->is_admin == 1){
+
+            $menus = Menu::where('menus.operation_id', $id)  
+                ->with(['items.adder','items.verifier','items.viewers'])  
+                ->orderBy('menus.id')  
+                ->get(); 
+                
+                //dd(['operation' => $operation, 'menus' => $menus]);
+
+        } else{
+            $menus = Menu::where('menus.operation_id', $id)  
+                ->with(['items' => function($query) use ($user_id) {  
+                    $query->where(function($query) use ($user_id) {  
+                        $query->where('items.adder_id', $user_id)  
+                              ->orWhere('items.verifier_id', $user_id);  
+                    })  
+                    ->orWhereHas('viewers', function ($query) use ($user_id) {  
+                        $query->where('viewer_id', $user_id); // This checks if the viewer_id matches the current user id  
+                    })  
+                    ->with(['adder', 'verifier', 'viewers']);  
+                }])  
+                ->orderBy('menus.id')  
+                ->get()  
+                ->toArray();
+        }
 
            //dd(Menu::with('items')->get()->toArray());
 

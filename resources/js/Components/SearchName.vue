@@ -1,9 +1,9 @@
 <template>
-<div style="" :class="{'black-bg-show':showSearchBox}" >
+<div   :class="{'black-bg-show':showSearchBox}" style="z-index:9" >
 
     <div id="inner" style="position: relative;">
 
-            <div class="close_icon" @click="btn_close_click" v-if="showSearchBox">
+            <div class="close_icon" @click="btn_close_click" >
                 X
             </div>
     
@@ -37,8 +37,11 @@
 
                          <div v-if="tab_old_is_selected && showSearchBox" style="background-color: aliceblue;" class="tab_content mt-3">
                                <ul class="">
-                                  <li class="search_most_frequent_user" v-for="user_obj in most_frequent_names" @click="selectResultfunction(user_obj)" style="cursor: pointer;">
+                                  <li class="search_most_frequent_user" v-for="user_obj in most_frequent_names" @click="selectResultfunction(user_obj)" 
+                                       style="cursor: pointer;  ">
                                         {{ user_obj.name }}
+                                         
+                                        
                                   </li>
                                </ul>
 
@@ -142,6 +145,7 @@ function selectResultfunction(row){
 
 function btn_close_click(){
     emit('close_search')
+    console.log('close_search');
 }
 
 const handleAdderNameChange =  _.debounce(()=>{
@@ -187,25 +191,12 @@ const handleAdderNameChange =  _.debounce(()=>{
 .black-bg-show{
     width: 500px;
     height: 300px;
-    background-color: black;
-    opacity: 0.5;
+    background-color: rgb(83, 82, 82);
+    /* opacity: 0.5; */
 
 }
 
-.close_icon{
-    justify-content: center;
-    position: absolute;
-    display: flex;
-    top: -7px;
-    left: -5px;
-    width: 20px;
-    height: 20px;
-    border-radius: 100%;
-    background-color: #bf1414;
-    color: rgb(255, 255, 255);
-    align-items: center;
-    cursor: pointer;
-}
+
 
 .btn_tab{
      cursor: pointer;
