@@ -21,7 +21,7 @@ class ItemController extends Controller
         return Inertia::render('Admin/Report/Index',['items'=>$all_items,'user_id'=>$user_id]);
     }
 
-    public function update(Request $request,  $id){
+    public function update_adder(Request $request,  $id){
         $type = $request->type;
         $data = [] ;
         $validator_rule=[];
@@ -52,6 +52,10 @@ class ItemController extends Controller
         }
 
          //dd($data);
+          
+         $data['related_date'] = $request->input('date_en') ?? null  ;
+         $data['added_at'] = now()  ;
+        
        
           $request->validate($validator_rule, $message) ;
          $data['change'] = 1;
@@ -114,9 +118,10 @@ class ItemController extends Controller
               'viewer_arr.*' => 'exists:users,id',
               'min'=> [],
               'max'=> [],
+              //'date_en'=> [],
           ]);
   
-         /// dd($validated_data);
+          //dd($validated_data);
           $item = new Item();
           $item->title = $validated_data['title'] ;
           $item->type = $validated_data['type'] ;
@@ -126,7 +131,9 @@ class ItemController extends Controller
           $item->viewer_id = $validated_data['viewer_id'] ;
           $item->min = $validated_data['min'] ;
           $item->max = $validated_data['max'] ;
-        
+          //$item->related_date = $validated_data['date_en']  ;
+          //$item->added_at = now()  ;
+          
           $item->save();
           $item->viewers()->sync($validated_data['viewer_arr']);
 

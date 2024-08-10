@@ -19,6 +19,12 @@
 
                           <input v-if="is_number(item)" v-model="form.input_value_new"  /> 
                           <input v-else type="checkbox" v-model="form.input_ticket_new" >
+
+                          <div class="mx-2 mb-3 d-inline-block" :title="form.date_fa">
+                               <div for="title" class="d-inline-block  ms-2 me-5" style="display: inline-block;">تاریخ مربوطه : </div>
+                               <DatePicker v-model="form.date_fa" class="d-inline-block"></DatePicker>
+                    
+                          </div>
                           <!-- <input   type="check" > -->
                           <button @click="updateValue" class="btn btn-sm btn-primary me-2">   ذخیره </button>
                           <button @click="closeInputfiledBox" class="mx-2">   بستن </button>
@@ -29,7 +35,7 @@
                                          {{ item.input_value_new }}
                             </div>
                              <div class="d-inline-block border py-1 px-3 mx-2" v-if="item.type !='number' && item.input_ticket_new!=NULL">
-                                     <input type="checkbox" :value="item.input_ticket_new == 1"   />
+                                     <input type="checkbox" :checked="item.input_ticket_new == 1"   />
                             </div>
                             <div class="d-inline-block border py-1 px-3 mx-2" v-if="item_accepted">
                                         تایید شده
@@ -112,7 +118,15 @@
                              <span class="ms-5"> {{ item_history.input_value }}</span> 
                              
                              <span>تاریخ تایید:</span>
-                             <span class="mx-3">  {{  jalaliDate(item_history.updated_at) }}</span> 
+                             <span class="mx-3">  {{  jalaliDate(item_history.updated_at) }}</span>
+
+                             <span>تاریخ ورود:</span>
+                             <span class="mx-3">  {{  jalaliDate(item_history.added_at) }}</span>
+
+                             <span v-if="item_history.related_date">تاریخ مربوطه:</span>
+                             <span class="mx-3">  {{item_history.related_date ? datetime_en_to_date_fa(item_history.related_date) :'' }}</span>
+                             
+                             
                           </div>
                       </div>
                      
@@ -137,6 +151,16 @@ import { computed, ref, watch, watchEffect } from 'vue';
 import { toast } from 'vue3-toastify'
 import 'vue3-toastify/dist/index.css';
 import moment from 'moment-jalaali';
+import DatePicker from 'vue3-persian-datetime-picker'
+import {convertGregorianToPersianDatetime as datetime_en_to_fa, convertPersianToGregorian as date_fa_to_en} from '@js/helpers/convert_date'
+
+function datetime_en_to_date_fa (date){
+    return moment(date).format('jYYYY/jMM/jDD')
+}
+
+
+
+
 
 
 const page = usePage();
@@ -186,9 +210,16 @@ function showError(){
 const form = useForm({
     input_value_new:null,
     input_ticket_new:null,
-    type:null
+    type:null,
+    date_fa:null,
+    date_en:null
 
 })
+
+watchEffect(()=>{
+    form.date_en = form.date_fa ? date_fa_to_en(form.date_fa) : '' 
+  })
+
 const form_verifier = useForm({
     accept:null,
     

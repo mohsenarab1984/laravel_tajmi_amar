@@ -80,7 +80,7 @@ Route::get('/admin/report/show', function () {
 })->middleware('admin');
 
 
-Route::put('/admin/report/{id}/adder', [ItemController::class,'update'])->middleware('auth','adder');
+Route::put('/admin/report/{id}/adder', [ItemController::class,'update_adder'])->middleware('auth','adder');
 Route::put('/admin/report/{id}/verifier', [ItemController::class,'update_verifier'])->middleware('auth','verifier');
 
 

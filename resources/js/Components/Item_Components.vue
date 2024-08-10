@@ -33,6 +33,15 @@
                       
                       <div v-if="form.errors.max" class="color_red">{{ form.errors.max }}</div>
                   </div>
+                  <!-- <div class="mx-2 mb-3 d-inline-block" :title="form.date_fa">
+                    <div for="title" class="d-inline-block  ms-2 me-5" style="display: inline-block;">تاریخ مربوطه : </div>
+                     <DatePicker v-model="form.date_fa" class="d-inline-block"></DatePicker>
+                    
+                  </div> -->
+
+                   
+
+               
 
              </div>
 
@@ -44,7 +53,8 @@
                    @clickSearchIcon="showSearchBox.adder=true"  class="d-inline-block" style="position: absolute; top:0; right: 0;" v-if="showSearchBox.adder" />  
                 
                 <div class="d-inline-block">{{ form.adder_name }}</div>  
-                <div v-if="form.errors.adder_id" class="color_red">{{ form.errors.adder_id }}</div>
+                <div   class="color_red"  >{{ form.errors.adder_id   }}</div>
+                <!-- <div   class="color_red" :style="{'opacity': form.errors.adder_id?.length>=1 ? 1: 0}">{{ form.errors.adder_id ?? '.' }}</div> -->
             </div>
 
             <div class="mb-3  d-inline-block me-5" style="position: relative;">
@@ -55,7 +65,8 @@
                    class="d-inline-block" style="position: absolute; top:0; right: 0;"   v-if="showSearchBox.verifier" />  
                 
                 <div class="d-inline-block">{{ form.verifier_name }}</div>
-                   <div v-if="form.errors.verifier_id" class="color_red">{{ form.errors.verifier_id }}</div>
+                   <div   class="color_red" >{{ form.errors.verifier_id }}</div>
+                   <!-- <div   class="color_red" :style="{'opacity': form.errors.adder_id?.length>=1 ? 1: 0}">{{ form.errors.verifier_id ?? '.' }}</div> -->
             </div>
 
             <div class="mb-3  d-inline-block me-5" style="position: relative;">
@@ -74,13 +85,13 @@
                       </div>
                 </div>
                 
-                <div v-if="form.errors.viewer_id" class="color_red">{{ form.errors.viewer_id }}</div>
+                <div   class="color_red" >{{ form.errors.viewer_id }}</div>
             </div>
 
              
-            <div v-if="form.errors">
+            <!-- <div v-if="form.errors">
                     <div v-for="error in form.errors" class="color_red"> {{ error }} </div>
-            </div>
+            </div> -->
             <div class=" mt-2 mb-3 me-5" style="display: flex;  gap: 50px;">
 
               <button class="btn btn-success btn-sm " @click="sendData">ذخیره</button>
@@ -93,13 +104,18 @@
   </template>
   
   <script setup>
-  import { reactive, ref, watchEffect } from 'vue';
+  import { onMounted, reactive, ref, watchEffect } from 'vue';
   import { useForm } from '@inertiajs/vue3';
   import _ from 'lodash'
   import axios from 'axios'
 
   import { toast } from 'vue3-toastify'
   import 'vue3-toastify/dist/index.css';
+
+  import DatePicker from 'vue3-persian-datetime-picker'
+  import moment from 'moment-jalaali';
+  import {convertGregorianToPersian as date_en_to_persian, convertPersianToGregorian as date_fa_to_en} from '@js/helpers/convert_date'
+
 //   import Modal from './Modal.vue';
 import closeButton from './closeButton.vue';
 
@@ -113,6 +129,8 @@ const emit = defineEmits(['toggle_show'])
   import SearchName from './SearchName.vue';
 import { MyErrorHandling } from '../helpers/manage_errors';
 
+
+const gregorianDate = ref('2022-03-21'); // Example Gregorian date (March 21, 2022)  
   
 const form_search = useForm({
        adder_name:'',
@@ -140,11 +158,14 @@ const form = useForm({
       viewer_arr:[],
       menu_id: null,
       min: null,
-      max: null
+      max: null,
+      date_fa:null,
+      date_en:null
 })
 
   watchEffect(()=>{
     form.menu_id = props.menu?.id ;
+    form.date_en = form.date_fa ? date_fa_to_en(form.date_fa) : '' 
   })
 
   const showModal = ref(false); 
@@ -263,9 +284,13 @@ const sendData = () => {
           
               toast.success('عملیات جدید با موفقیت ساخته شد')
               form.clearErrors()
+              form.reset()
+              emit('toggle_show')
               
-            }
-        })
+            },
+            preserveScroll:true,
+        }
+      )
  };
 
 

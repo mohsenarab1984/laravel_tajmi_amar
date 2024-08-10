@@ -13,7 +13,7 @@ class OperationController extends Controller
 {
 
     public function show($id){
-         $operation = Operation::find($id) ;
+         $operation = Operation::findorFail($id) ;
          $menus = Menu::where('operation_id',$id)->OrderBy('id')->with('items.adder','items.verifier','items.viewer','items.viewers')->get();
        
         /// $item = Item::where('id',19)->with('viewers')->get();

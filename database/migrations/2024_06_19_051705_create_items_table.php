@@ -28,6 +28,7 @@ return new class extends Migration
             $table->integer('verifier_id');
             $table->integer('viewer_id')->default('0');
             $table->timestamp('added_at')->nullable();
+            $table->timestamp('related_date')->nullable();
             $table->timestamp('verified_at')->nullable();
             $table->text('history')->nullable();
             $table->timestamps();
